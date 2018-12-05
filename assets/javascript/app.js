@@ -5,7 +5,8 @@ var actresses = ["Anna Kendrick", "Rebel Wilson", "Amy Schumer", "Kristen Wigg"]
 function displayActress() {
 
     var actress = $(this).attr("data-name");
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + actress + "&api_key=j6IgvnuhzcCWb5w8XNkFGtnCWBhtKr3x";
+    var api_key = "j6IgvnuhzcCWb5w8XNkFGtnCWBhtKr3x";
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + actress + "&api_key=" + api_key + "&limit=10";
 
     // Creating an AJAX call for the specific actress button being clicked
     $.ajax({
@@ -13,23 +14,34 @@ function displayActress() {
         method: "GET"
     }).then(function (response) {
         console.log(response);
+        console.log(queryURL);
 
-        // var results = response.data;
+          // Looping through each result item
+          for (var i = 0; i < actresses.length; i++) {
 
         // Creating a div to hold the actress
         var actressDiv = $("<div class='actress'>");
 
+        var results = response.data;
+
         var rating = response.Rated;
 
         // Creating an element to have the rating displayed
-        var pOne = $("<p>").text("Rating: " + rating);
+        var p = $("<p>").text("Rating: " + results[i].rating);
+
+        var actressImage = $("<img>");
+
+        actressImage.attr("src", results[i].images.fixed_height.url);
 
         // Displaying the rating
-        actressDiv.append(pOne);
+        actressDiv.append(p);
+
+        
+        actressDiv.append(actressImage);
 
         // Putting the entire movie above the previous movies
         $("#actress-view").prepend(actressDiv);
-    });
+    }});
 }
 
 // Function for displaying movie data
@@ -43,7 +55,6 @@ function renderButtons() {
     for (var i = 0; i < actresses.length; i++) {
 
         // Then dynamicaly generating buttons for each movie in the array
-        // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
         var a = $("<button>");
         // Adding a class of actress-btn to our button
         a.addClass("actress-btn");
@@ -73,3 +84,19 @@ $("#add-actress").on("click", function (event) {
 $(document).on("click", ".actress-btn", displayActress);
 // Calling the renderButtons function to display the intial buttons
 renderButtons();
+
+//Toggle between still and live gif's
+$(".gif").on("click", function() {
+    // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
+    var URL = $(this).attr("data-state");
+    // If the clicked image's state is still, update its src attribute to what its data-animate value is.
+    // Then, set the image's data-state to animate
+    // Else set src to the data-still value
+    if (URL === "still") {
+      $(this).attr("src", $(this).attr("data-animate"));
+      $(this).attr("data-state", "animate");
+    } else {
+      $(this).attr("src", $(this).attr("data-still"));
+      $(this).attr("data-state", "still");
+    }
+  });
