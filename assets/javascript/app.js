@@ -5,8 +5,8 @@ var actresses = ["Anna Kendrick", "Rebel Wilson", "Amy Schumer", "Kristen Wigg"]
 function displayActress() {
 
     var actress = $(this).attr("data-name");
-    var api_key = "j6IgvnuhzcCWb5w8XNkFGtnCWBhtKr3x";
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + actress + "&api_key=" + api_key + "&limit=10";
+    // var api_key = "j6IgvnuhzcCWb5w8XNkFGtnCWBhtKr3x";
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + actress + "&api_key=j6IgvnuhzcCWb5w8XNkFGtnCWBhtKr3x&limit=10";
 
     // Creating an AJAX call for the specific actress button being clicked
     $.ajax({
@@ -16,32 +16,34 @@ function displayActress() {
         console.log(response);
         console.log(queryURL);
 
-          // Looping through each result item
-          for (var i = 0; i < actresses.length; i++) {
+        // Looping through each result item
+        for (var i = 0; i < actresses.length; i++) {
 
-        // Creating a div to hold the actress
-        var actressDiv = $("<div class='actress'>");
+            // Creating a div to hold the actress
+            var actressDiv = $("<div class='actress'>");
 
-        var results = response.data;
+            var results = response.data;
+            var rating = response.Rated;
 
-        var rating = response.Rated;
+            // Creating an element to have the rating displayed
+            var p = $("<p>").text("Rating: " + results[i].rating);
 
-        // Creating an element to have the rating displayed
-        var p = $("<p>").text("Rating: " + results[i].rating);
+            var actressImage = $("<img>");
+            actressImage.attr("src", results[i].images.fixed_height_still.url);
 
-        var actressImage = $("<img>");
+            actressImage.attr('data-still', results[i].images.fixed_height_still.url);
+            actressImage.attr('data-state', 'still');
+            actressImage.addClass('gif');
+            actressImage.attr('data-animate', results[i].images.fixed_height.url);
 
-        actressImage.attr("src", results[i].images.fixed_height.url);
+            // Displaying the rating
+            actressDiv.append(p);
+            actressDiv.append(actressImage);
 
-        // Displaying the rating
-        actressDiv.append(p);
-
-        
-        actressDiv.append(actressImage);
-
-        // Putting the entire movie above the previous movies
-        $("#actress-view").prepend(actressDiv);
-    }});
+            // Putting the entire movie above the previous movies
+            $("#actress-view").prepend(actressDiv);
+        }
+    });
 }
 
 // Function for displaying movie data
@@ -80,23 +82,23 @@ $("#add-actress").on("click", function (event) {
     renderButtons();
 });
 
-// Adding a click event listener to all elements with a class of "actress-btn"
-$(document).on("click", ".actress-btn", displayActress);
-// Calling the renderButtons function to display the intial buttons
-renderButtons();
-
 //Toggle between still and live gif's
-$(".gif").on("click", function() {
+$(document).on("click", "#actress-view", function () {
     // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
     var URL = $(this).attr("data-state");
     // If the clicked image's state is still, update its src attribute to what its data-animate value is.
     // Then, set the image's data-state to animate
     // Else set src to the data-still value
-    if (URL === "still") {
-      $(this).attr("src", $(this).attr("data-animate"));
-      $(this).attr("data-state", "animate");
-    } else {
-      $(this).attr("src", $(this).attr("data-still"));
-      $(this).attr("data-state", "still");
-    }
-  });
+		if ( URL == 'still'){
+                $(this).attr('src', $(this).data('animate'));
+                $(this).attr('data-state', 'animate');
+            }else{
+                $(this).attr('src', $(this).data('still'));
+                $(this).attr('data-state', 'still');
+            };
+        })
+// Adding a click event listener to all elements with a class of "actress-btn"
+$(document).on("click", ".actress-btn", displayActress);
+
+// Calling the renderButtons function to display the intial buttons
+renderButtons();
