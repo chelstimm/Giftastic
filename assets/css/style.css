@@ -1,3 +1,52 @@
-body {
-background: darkmagenta;
+.container-fluid {
+    background: darkmagenta;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+#add-actress {
+    background: black;
+    color: white;
+    margin-top: 10px;
+}
+
+#add-actress:hover {
+    background: white;
+    color: black;
+    margin-top: 10px;
+}
+
+.actress-btn {
+    background: black;
+    color: white;
+    margin: 10px;
+    margin-top: 30px;
+    padding: 5px;
+}
+
+.actress-btn:hover {
+    background: white;
+    color: black;
+    margin: 10px;
+    margin-top: 30px;
+    padding: 5px;
+}
+
+#actress-view {
+    background: white;
+    margin: 0 auto;
+    padding: 10px;
+    width: 100%;
+    height: 800px;
+    border: 5px solid black;
+    overflow: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+label {
+    color: white;
+    font-size: 22px;
+    font-family: Arial, Helvetica, sans-serif;
 }

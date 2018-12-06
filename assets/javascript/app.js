@@ -5,6 +5,7 @@ var actresses = ["Anna Kendrick", "Rebel Wilson", "Amy Schumer", "Kristen Wigg"]
 function displayActress() {
 
     var actress = $(this).attr("data-name");
+    console.log(actress)
     // var api_key = "j6IgvnuhzcCWb5w8XNkFGtnCWBhtKr3x";
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + actress + "&api_key=j6IgvnuhzcCWb5w8XNkFGtnCWBhtKr3x&limit=10";
 
@@ -13,11 +14,11 @@ function displayActress() {
         url: queryURL,
         method: "GET"
     }).then(function (response) {
+        var {data, meta} = response
         console.log(response);
-        console.log(queryURL);
 
         // Looping through each result item
-        for (var i = 0; i < actresses.length; i++) {
+        for (var i = 0; i < response.data.length; i++) {
 
             // Creating a div to hold the actress
             var actressDiv = $("<div class='actress'>");
@@ -29,6 +30,8 @@ function displayActress() {
             var p = $("<p>").text("Rating: " + results[i].rating);
 
             var actressImage = $("<img>");
+            // var animate = $("<img class = ");
+
             actressImage.attr("src", results[i].images.fixed_height_still.url);
 
             actressImage.attr('data-still', results[i].images.fixed_height_still.url);
@@ -53,7 +56,7 @@ function renderButtons() {
     // (this is necessary otherwise you will have repeat buttons)
     $("#buttons-view").empty();
 
-    // Looping through the array of movies
+    // Looping through the array of actresses
     for (var i = 0; i < actresses.length; i++) {
 
         // Then dynamicaly generating buttons for each movie in the array
@@ -83,7 +86,7 @@ $("#add-actress").on("click", function (event) {
 });
 
 //Toggle between still and live gif's
-$(document).on("click", "#actress-view", function () {
+$("#actress-view").on("click", ".actressDiv", function () {
     // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
     var URL = $(this).attr("data-state");
     // If the clicked image's state is still, update its src attribute to what its data-animate value is.
