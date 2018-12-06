@@ -29,7 +29,7 @@ function displayActress() {
             // Creating an element to have the rating displayed
             var p = $("<p>").text("Rating: " + results[i].rating);
 
-            var actressImage = $("<img>");
+            var actressImage = $("<img class='picture'>");
             // var animate = $("<img class = ");
 
             actressImage.attr("src", results[i].images.fixed_height_still.url);
@@ -86,7 +86,7 @@ $("#add-actress").on("click", function (event) {
 });
 
 //Toggle between still and live gif's
-$("#actress-view").on("click", ".actressDiv", function () {
+$("#actress-view").on("click", ".picture", function () {
     // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
     var URL = $(this).attr("data-state");
     // If the clicked image's state is still, update its src attribute to what its data-animate value is.
