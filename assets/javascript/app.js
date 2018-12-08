@@ -6,7 +6,6 @@ function displayActress() {
 
     var actress = $(this).attr("data-name");
     console.log(actress)
-    // var api_key = "j6IgvnuhzcCWb5w8XNkFGtnCWBhtKr3x";
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + actress + "&api_key=j6IgvnuhzcCWb5w8XNkFGtnCWBhtKr3x&limit=10";
 
     // Creating an AJAX call for the specific actress button being clicked
@@ -14,7 +13,7 @@ function displayActress() {
         url: queryURL,
         method: "GET"
     }).then(function (response) {
-        var {data, meta} = response
+        var { data, meta } = response
         console.log(response);
 
         // Looping through each result item
@@ -43,23 +42,20 @@ function displayActress() {
             actressDiv.append(p);
             actressDiv.append(actressImage);
 
-            // Putting the entire movie above the previous movies
             $("#actress-view").prepend(actressDiv);
         }
     });
 }
 
-// Function for displaying movie data
+// Function for displaying actress data
 function renderButtons() {
 
-    // Deleting the movies prior to adding new movies
-    // (this is necessary otherwise you will have repeat buttons)
     $("#buttons-view").empty();
 
     // Looping through the array of actresses
     for (var i = 0; i < actresses.length; i++) {
 
-        // Then dynamicaly generating buttons for each movie in the array
+        // Then dynamicaly generating buttons for each actress in the array
         var a = $("<button>");
         // Adding a class of actress-btn to our button
         a.addClass("actress-btn");
@@ -72,16 +68,19 @@ function renderButtons() {
     }
 }
 
-// This function handles events where a movie button is clicked
+// This function handles events where an actress button is clicked
 $("#add-actress").on("click", function (event) {
     event.preventDefault();
     // This line grabs the input from the textbox
     var actress = $("#actress-input").val().trim();
 
-    // Adding movie from the textbox to our array
+    // Adding actress from the textbox to our array
     actresses.push(actress);
 
-    // Calling renderButtons which handles the processing of our movie array
+    // Clears textbox
+    $('#actress-input').val('');
+
+    // Calling renderButtons which handles the processing of our actress array
     renderButtons();
 });
 
@@ -89,19 +88,30 @@ $("#add-actress").on("click", function (event) {
 $("#actress-view").on("click", ".picture", function () {
     // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
     var URL = $(this).attr("data-state");
-    // If the clicked image's state is still, update its src attribute to what its data-animate value is.
-    // Then, set the image's data-state to animate
-    // Else set src to the data-still value
-		if ( URL == 'still'){
-                $(this).attr('src', $(this).data('animate'));
-                $(this).attr('data-state', 'animate');
-            }else{
-                $(this).attr('src', $(this).data('still'));
-                $(this).attr('data-state', 'still');
-            };
-        })
+
+    if (URL == 'still') {
+        $(this).attr('src', $(this).data('animate'));
+        $(this).attr('data-state', 'animate');
+    } else {
+        $(this).attr('src', $(this).data('still'));
+        $(this).attr('data-state', 'still');
+    };
+})
+
+//Clears all gif's
+$(document).on("click", "#clear", function () {
+
+    // Removes all uploaded gifs
+    $('#actress-view').empty();
+
+    // Calling the renderButtons function to display the intial buttons
+    renderButtons();
+
+});
 // Adding a click event listener to all elements with a class of "actress-btn"
 $(document).on("click", ".actress-btn", displayActress);
 
 // Calling the renderButtons function to display the intial buttons
 renderButtons();
+
+
