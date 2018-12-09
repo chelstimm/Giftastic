@@ -1,14 +1,14 @@
 //Array for topic
 var actresses = ["Anna Kendrick", "Rebel Wilson", "Amy Schumer", "Kristen Wigg"];
 
-// displayActressInfo function re-renders the HTML to display the appropriate content
+// Function re-renders the HTML to display the appropriate content
 function displayActress() {
 
     var actress = $(this).attr("data-name");
     console.log(actress)
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + actress + "&api_key=j6IgvnuhzcCWb5w8XNkFGtnCWBhtKr3x&limit=10";
 
-    // Creating an AJAX call for the specific actress button being clicked
+    // AJAX call for the specific actress button being clicked
     $.ajax({
         url: queryURL,
         method: "GET"
@@ -19,17 +19,16 @@ function displayActress() {
         // Looping through each result item
         for (var i = 0; i < response.data.length; i++) {
 
-            // Creating a div to hold the actress
+            // Div to hold the actress
             var actressDiv = $("<div class='actress'>");
 
             var results = response.data;
             var rating = response.Rated;
 
-            // Creating an element to have the rating displayed
+            // Element to have the rating displayed
             var p = $("<p>").text("Rating: " + results[i].rating);
 
             var actressImage = $("<img class='picture'>");
-            // var animate = $("<img class = ");
 
             actressImage.attr("src", results[i].images.fixed_height_still.url);
 
@@ -55,7 +54,7 @@ function renderButtons() {
     // Looping through the array of actresses
     for (var i = 0; i < actresses.length; i++) {
 
-        // Then dynamicaly generating buttons for each actress in the array
+        // Dynamic buttons for each actress in the array
         var a = $("<button>");
         // Adding a class of actress-btn to our button
         a.addClass("actress-btn");
@@ -74,14 +73,18 @@ $("#add-actress").on("click", function (event) {
     // This line grabs the input from the textbox
     var actress = $("#actress-input").val().trim();
 
-    // Adding actress from the textbox to our array
-    actresses.push(actress);
+    // Only adds buttons if input field is not blank and topic has not already been added
+    if (actress != '' && actresses.indexOf(actress) === -1) {
 
-    // Clears textbox
-    $('#actress-input').val('');
+        // Adding actress from the textbox to our array
+        actresses.push(actress);
 
-    // Calling renderButtons which handles the processing of our actress array
-    renderButtons();
+        // Calling renderButtons which handles the processing of our actress array
+        renderButtons();
+
+        // Clears textbox
+        $("#actress-input").val('');
+    };
 });
 
 //Toggle between still and live gif's
