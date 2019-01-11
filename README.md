@@ -1,5 +1,5 @@
 # Giftastic #
-![](Giftastic/assets/images/Giftastic.png)
+![](/assets/images/Giftastic.png)
       
 Get gifs from your favorite female actresses at the click of a button!
 
